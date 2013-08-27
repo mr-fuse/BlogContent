@@ -1,0 +1,4 @@
+BlogPosts
+=========
+
+Blog posts content
