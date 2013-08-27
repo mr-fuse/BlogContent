@@ -10,5 +10,3 @@ Mais dans tout les cas, une application est développée en local et ensuite dé
     echo 'Hello world';
     exit(0);
 
-
-![Alt text]({{ site.url }}images/logo-wozbe-full-alpha.png)
