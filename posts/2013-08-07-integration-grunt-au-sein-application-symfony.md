@@ -143,6 +143,37 @@ Pour inclure ces fichiers à vos pages, vous pouvez utiliser la fonction Twig **
 
 ### Définition des sources JavaScript
 
+Passons à l'écriture de nos fichiers JavaScript.  
+
+~~~~~
+# app/Resources/public/js/wozbe.js
+
+// Do code JavaScript qui fait quelque chose de sympa
+(function () {
+  'use strict';
+  
+  var onHashChange = function() { 
+    jQuery('#element').css('background', 'blue');
+  };
+  
+  window.addEventListener('hashchange', onHashChange);
+}());
+~~~~~
+
+L'exportation de ce fichier se fera dans le répertoire **web/bundles/app/**, et la compilation dans **web/built/app/**
+~~~~~
+# Les fichiers exportés sont dans web/bundles/
+web/bundles/app/js/wozbe.js
+
+# Les fichiers modifiés sont dans web/built/
+web/built/app/js/wozbe.js
+~~~~~
+
+Pour inclure ces fichiers à vos pages, vous pouvez utiliser la fonction Twig **assets**
+~~~~~
+<script src="{{ asset('built/app/js/wozbe.js') }}"></script>
+~~~~~
+
 ### Configuration et Utilisation de Bower
 
 Comme nous l'avons vu au début de l'article, Bower est un gestionnaire de dépendance **front-end**.
@@ -365,7 +396,6 @@ grunt
 ~~~~~
 
 L'option **watch** vous permet d'exécuter toutes les tâches Grunt nécessaires à votre applications à chaque modification d'un fichier source.
-
 ~~~~~
 grunt watch
 ~~~~~
