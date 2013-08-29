@@ -1,12 +1,9 @@
-## Déploiement d'application Symfony 2 avec Capifony
+## Déploiement d'application Symfony avec Capifony
 
 
 ### Définition du besoin
 
 En fonction des projets, des entreprises et des intervenants, les besoins seront differents.  
-Meme si des entreprises continuent aujourd'hui a modifier directement les fichiers de production, 
-Mais dans tout les cas, une application est développée en local et ensuite déployé sur un serveur de production.
+Même si certaines entreprises continuent aujourd'hui de modifier directement les fichiers sur la production, celles-ci sont de plus en plus râre et heureusement.
 
-    echo 'Hello world';
-    exit(0);
-
+Une bonne pratique consiste à réaliser le développement en local, et ensuite de déployer sur un serveur de production.  

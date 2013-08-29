@@ -1,1 +1,1 @@
-# ElasticSearch pour un projet Symfony
+# Intégrer ElasticSearch à un projet Symfony
