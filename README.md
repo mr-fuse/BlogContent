@@ -1,4 +1,4 @@
 BlogPosts
 =========
 
-Blog posts content
+Blog posts content : http://wozbe.com/fr/blog
