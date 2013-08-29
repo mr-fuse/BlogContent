@@ -20,14 +20,11 @@ Pour faire une comparaison rapide, Bower est l'équivalent de Composer pour les 
 Chez Wozbe,  
 Nous avons pris l'habitude d'utiliser le couple **Bower et Grunt** pour gérer les librairies **front-end** tels que [jQuery][jquery], [YUI][yui], [Bootstrap][bootstrap], [Chosen][chosen], [LESS][less]...
 
-Etant développeur Symfony,  
-Voici le cas d'usage d'une intégration **Bootstrap, jQuery et FontAwesome** au sein d'une application Symfony2 grâce à Bower & Grunt.
-
 > Certaines parties incluant une structure spécifique peuvent être contestable. Il s'agit d'essais sur nos projets internes afin d'en mesurer l'usage.
 
 ### Structure de fichier
 
-Pour commencer, voyons la structure de vos ressources.  
+Pour commencer, voyons la structure de nos ressources.  
 
 ~~~~~
 # Les bundles
@@ -47,10 +44,10 @@ app/Resources/public/less
 ~~~~~
 
 #### Les bundles
-Il est fort probable que la structure de vos bundles corresponde à la structure **recommandée par Symfony2**. Ainsi vous utilisez le répertoire **Resources/public/** pour mettre tout les fichiers qui devront etre disponible pour vos clients.
+Il est fort probable que la structure de vos bundles corresponde à la structure **recommandée par Symfony2**. Ainsi vous utilisez le répertoire **src/Acme/DemoBundle/Resources/public/** pour mettre tout les fichiers qui devront être disponible pour vos clients.
 
 De ce fait, vous utilisez la commande *app/console assets:install* pour déployer ces fichiers dans le répertoire **web/**.  
-Ce déploiement peut-etre réalisé par une copie de fichier ou par la mise en place de lien symbolique avec l'option **--symlink**.
+Ce déploiement peut-être réalisé par une copie de fichier ou par la mise en place de lien symbolique avec l'option **--symlink**.
 
 Cette opération va donc créer un répertoire **web/bundles/acmedemo/** contenant les fichiers du répertoire **src/Acme/DemoBundle/Resources/public/**
 
@@ -59,16 +56,16 @@ Pour la structure des ressources de l'application, nous prenons une liberté vis
 La documentation indique que pour surcharger les templates d'un bundle nous devons utiliser le répertoire **app/Resources/AcmeDemoBundle/views**.  
 A ce titre, nous pensons qu'il faut utiliser le répertoire **app/Resources/public** pour gérer les fichiers publics de l'application.
 
-Une de nos tâches Grunt consistera à mettre dans le répertoire **web/bundles/app/** le contenu de **app/Resources/public**, ainsi nous traitons les ressources de l'application comme nous le faisons avec un bundle.
+Une de nos tâches [Grunt][grunt] consistera à mettre dans le répertoire **web/bundles/app/** le contenu de **app/Resources/public**, ainsi nous traitons les ressources de l'application de la même manière que nous le faisons avec un bundle.
 
 ### Ce que l'on attends
-Nous avons décrit la structure des fichiers sources. Sur l'utilisation des bundles il n'y a rien de different par rapport à vos habitudes. On change par contre la manière de procéder pour les données communes à votre application.
+Nous avons décrit la structure des fichiers sources. Sur l'utilisation des bundles il n'y a rien de différent par rapport à vos habitudes. On change par contre la manière de procéder pour les données communes à votre application.
 
-Voici la structure intermédiaire de vos ressources.
+Voici la structure de vos ressources que l'on aura après exportation via Grunt.
 
 ~~~~~
-# Les sources sont copiés dans web/bundles
-# On y retrouve les bundles et l'application
+# Les sources sont copiées dans web/bundles/
+# On retrouve les bundles et l'application
 web/bundles/acmedemo/images
 web/bundles/acmedemo/js
 web/bundles/acmedemo/less
@@ -81,19 +78,21 @@ web/bundles/app/less
 Au sein de notre projet,  
 Nous allons appliquer différents traitements sur nos fichiers sources, comme la compilation des fichiers LESS en CSS, minification et/ou obfuscation des sources Javascript.
 
-Notre objectif est de fournir la structure de fichier suivante
+Nous définissons un répertoire spécifique aux fichiers modifiés : **web/built/**
 
 ~~~~~
-# Les fichiers modifiés sont dans web/built
+# Les fichiers modifiés sont dans web/built/
 web/built/acmedemo/js
 web/built/acmedemo/css
 web/built/app/js
 web/built/app/css
 ~~~~~
 
-Vous remarquerez que nous n'avons plus les répertoires **images/** et **fonts/**, ces fichiers n'ayant reçu aucune modification. Ils restent dans **web/bundles/**
+Vous remarquerez que les répertoires **web/built/*/images/** et **web/built/*/fonts/** ne sont pas définis, les fichiers associés n'ayant reçu aucune modification. Ils restent dans **web/bundles/**
 
-## Utilisation de Bootstrap avec FontAwesome
+## Cas d'usage : Symfony avec Bootstrap, jQuery et FontAwesome
+
+Voici le cas d'usage d'une intégration **Bootstrap, jQuery et FontAwesome** au sein d'une application Symfony2 grâce à Bower & Grunt.
 
 Passons à l'écriture de nos fichiers LESS.  
 Il s'agit ici d'un choix purement spécifique à votre application, l'exemple définit deux styles, un généraliste et un spécifique.
@@ -144,7 +143,7 @@ Pour inclure ces fichiers à vos pages, vous pouvez utiliser la fonction Twig **
 <link rel="stylesheet" href="{{ asset('built/acmedemo/css/index.css') }}" type="text/css"/>
 ~~~~~
 
-## Configuration et Utilisation de Bower
+### Configuration et Utilisation de Bower
 Comme nous l'avons vu au début de l'article, Bower est un gestionnaire de dépendance **front-end**.
 
 La configuration de Bower passe par un fichier caché **.bower**. Vous pourrez configurer le répertoire de destination des librairies, ainsi que le fichier contenant la liste de vos dépendances.
@@ -180,7 +179,7 @@ Pour définir les dépendances, le fichier bower.json a le meme role que le fich
 
 Un fois installé via **npm -g install bower**, vous pourrez déployer vos librairies simplement avec **bower install**.
 
-## Configuration et Utilisation de Grunt
+### Configuration et Utilisation de Grunt
 Passons enfin à l'essence de l'article, la configuration et l'utilisation de Grunt.
 
 ~~~~~
@@ -267,7 +266,7 @@ module.exports = function(grunt) {
     // https://github.com/gruntjs/grunt-contrib-symlink
     //
     symlink: {
-      // app/Resources/public/ doit etre disponible via web/bundles/app/
+      // app/Resources/public/ doit être disponible via web/bundles/app/
       app: {
         dest: 'web/bundles/app',
         relativeSrc: '../../app/Resources/public/',
@@ -314,8 +313,8 @@ module.exports = function(grunt) {
         dest: 'web/built/app/js/wozbe.js'
       }
     },
-    // Lorsque l'on modifie des fichiers LESS, il faut relancer la tache 'css' définit plus haut
-    // Lorsque l'on modifie des fichiers JS, il faut relancer la tache 'javascript' définit plus haut
+    // Lorsque l'on modifie des fichiers LESS, il faut relancer la tache 'css'
+    // Lorsque l'on modifie des fichiers JS, il faut relancer la tache 'javascript'
     watch: {
       css: {
         files: ['web/bundles/*/less/*.less'],
