@@ -1,4 +1,4 @@
-# Intégration Grunt et Bower au sein d'une application Symfony2
+# Intégration Grunt et Bower au sein d'une application Symfony
 
 ## Définition des outils
 
