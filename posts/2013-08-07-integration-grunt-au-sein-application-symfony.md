@@ -94,8 +94,10 @@ Vous remarquerez que les répertoires **web/built/*/images/** et **web/built/*/f
 
 Voici le cas d'usage d'une intégration **Bootstrap, jQuery et FontAwesome** au sein d'une application Symfony2 grâce à Bower & Grunt.
 
+### Définition des sources LESS
+
 Passons à l'écriture de nos fichiers LESS.  
-Il s'agit ici d'un choix purement spécifique à votre application, l'exemple définit deux styles, un généraliste et un spécifique.
+Il s'agit ici d'un choix spécifique pour notre application, où l'on définit deux styles, un généraliste et un spécifique.
 ~~~~~
 # app/Resources/public/less/wozbe.less
 
@@ -118,21 +120,17 @@ body {
 # src/Acme/DemoBundle/Resources/public/less/index.less
 
 .blog-index {
-  footer {
-    margin-top: 0;
-  }
-
-  .zone-references {
-    .reference {
-      .boxedContent (600px);
-    }
-  }
+  background: @green;
 }
 ~~~~~
 
-Les fichiers seront disponibles dans le répertoire **web/** 
+L'exportation de ces fichiers se fera dans le répertoire **web/bundles/**, et la compilation dans **web/built/**
 ~~~~~
-# Les fichiers modifiés sont dans web/built
+# Les fichiers exportés sont dans web/bundles/
+web/bundles/acmedemo/less/index.less
+web/bundles/app/less/wozbe.less
+
+# Les fichiers modifiés sont dans web/built/
 web/built/acmedemo/css/index.css
 web/built/app/css/wozbe.css
 ~~~~~
@@ -143,8 +141,16 @@ Pour inclure ces fichiers à vos pages, vous pouvez utiliser la fonction Twig **
 <link rel="stylesheet" href="{{ asset('built/acmedemo/css/index.css') }}" type="text/css"/>
 ~~~~~
 
+### Définition des sources JavaScript
+
 ### Configuration et Utilisation de Bower
+
 Comme nous l'avons vu au début de l'article, Bower est un gestionnaire de dépendance **front-end**.
+
+~~~~~
+# Installation de Bower
+npm -g install bower
+~~~~~
 
 La configuration de Bower passe par un fichier caché **.bower**. Vous pourrez configurer le répertoire de destination des librairies, ainsi que le fichier contenant la liste de vos dépendances.
 ~~~~~
@@ -155,14 +161,16 @@ La configuration de Bower passe par un fichier caché **.bower**. Vous pourrez c
 }
 ~~~~~
 Comme vous pouvez le voir, nous utilisons le répertoire **web/vendor** comme lieux d'accueil des librairies front-end.  
-L'avantage, c'est que l'ensemble des librairies sera disponible directement, et l'inconvéniant, c'est qu'il vous faudra utiliser des librairies de confiance.
+L'avantage, l'ensemble des librairies sera disponible directement, et l'inconvéniant, il vous faudra utiliser des librairies de confiance.
 
-Pour définir les dépendances, le fichier bower.json a le meme role que le fichier **composer.json**
+> Si vous souhaitez aller plus loin. Vous pouvez utiliser un répertoire non disponible via HTTP, comme **vendor-front/**
+
+Pour définir les dépendances, nous allons éditer un fichier **bower.json** qui a le même rôle que le fichier **composer.json**
 ~~~~~
 # bower.json
 {
   "name": "wozbe",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "bower.json",
   "ignore": [
     "**/.*",
@@ -177,9 +185,10 @@ Pour définir les dépendances, le fichier bower.json a le meme role que le fich
 }
 ~~~~~
 
-Un fois installé via **npm -g install bower**, vous pourrez déployer vos librairies simplement avec **bower install**.
+Le déployement des librairies se fera simplement avec **bower install**.
 
 ### Configuration et Utilisation de Grunt
+
 Passons enfin à l'essence de l'article, la configuration et l'utilisation de Grunt.
 
 ~~~~~
@@ -187,10 +196,10 @@ Passons enfin à l'essence de l'article, la configuration et l'utilisation de Gr
 npm install -g grunt-cli
 ~~~~~
 
-Le role de grunt CLI est d'executer la version de Grunt correspondant à votre fichier de description **Gruntfile**.  
-Ainsi, vous n'avez qu'un utilitaire d'execution grunt sur votre système, et vous pouvez avoir des versions de Grunt différentes pour chacun de vos projets.
+Le rôle de [GruntCLI][grunt_cli] est d'exécuter la version de Grunt correspondant au fichier de description **Gruntfile.js**.  
+Ainsi, vous n'avez qu'un utilitaire d'exécution grunt sur votre système, et différentes versions de Grunt pour chacun de vos projets peuvent coexister.
 
-Grace au fichier **package.json**, nous allons définir les dépendances NodeJS et donc aussi de Grunt qui seront installé par [NPM][npm]
+Grâce au fichier **package.json**, nous allons définir les dépendances NodeJS et Grunt qui seront installées par [NPM][npm]
 
 ~~~~~
 # package.json
@@ -212,10 +221,10 @@ Grace au fichier **package.json**, nous allons définir les dépendances NodeJS 
 }
 ~~~~~
 
-Vous pouvez maintenant récuperer les dépendances via **npm install**.  
-Pour ceux qui n'ont jamais utilisé NodeJS, vous verrez que les modules sont installés dans le répertoire **node_modules**.
+La récupération des dépendances se fera via **npm install**.  
+Pour ceux qui n'ont jamais utilisé NodeJS, vous verrez que les modules sont installés dans le répertoire **node_modules/**.
 
-La configuration du Gruntfile sera simplifié pour les besoins de l'article. Vous trouverez la version complète de ce fichier pour wozbe.com sur [Github][gruntfile_github].
+La configuration de **Gruntfile.js** sera ici simplifiée pour les besoins de l'article. Vous trouverez la version complète de ce fichier pour wozbe.com sur [Github][gruntfile_github].
 
 ~~~~~
 # Gruntfile.js
@@ -234,7 +243,7 @@ module.exports = function(grunt) {
 
   // Gestion des fichiers LESS
   // Les sources des fichiers LESS sont situées : bundles/[bundle]/less/
-  // La destination souhaitées des fichiers LESS : built/[bundle]/css/
+  // La destination souhaitées des fichiers compilés CSS : built/[bundle]/css/
   var mappingFileLess = grunt.file.expandMapping(
     ['*/less/*.less', '*/less/*/*.less'], 
     'web/built/', {
@@ -245,7 +254,7 @@ module.exports = function(grunt) {
     });
 
   // Construction de l'objet "filesLess"
-  // Les propriétés de l'objet font réference à la destination souhaité (CSS), et leurs valeurs à la source des fichiers (LESS)
+  // Les propriétés de l'objet font réference à la destination souhaitée (CSS), et leurs valeurs à la source des fichiers (LESS)
   grunt.util._.each(mappingFileLess, function(value) {
     // Why value.src is an array ??
     filesLess[value.dest] = value.src[0];
@@ -264,7 +273,6 @@ module.exports = function(grunt) {
     },
     // Définition de la tache 'symlink'
     // https://github.com/gruntjs/grunt-contrib-symlink
-    //
     symlink: {
       // app/Resources/public/ doit être disponible via web/bundles/app/
       app: {
@@ -342,15 +350,27 @@ module.exports = function(grunt) {
 };
 ~~~~~
 
-Ce fichier de configuration reprends tout ce que nous avons évoqué au cours de l'article.  
-A savoir que les fichiers Javascript et LESS seront compilés dans les fichiers suivant :
+Ce fichier de configuration [Grunt][grunt] permet de réaliser ce que nous avons évoqué au cours de l'article.  
+
+### Résumé des commandes utiles
+
+Pour l'extraction des ressources de vos bundles et de vos applications.
 ~~~~~
-web/built/app/js/wozbe.js
-web/built/app/css/wozbe.css
-web/built/acmedemo/css/index.css
+php app/console assets:install --symlink && grunt symlink
 ~~~~~
 
-![Alt text]({{ site.url }}images/logo-wozbe-full-alpha.png)
+Pour Compiler, minifier, etc.. 
+~~~~~
+grunt
+~~~~~
+
+L'option **watch** vous permet d'exécuter toutes les tâches Grunt nécessaires à votre applications à chaque modification d'un fichier source.
+
+~~~~~
+grunt watch
+~~~~~
+
+Si vous avez des commentaires à faire sur cette approche, n'hésiter surtout pas.
 
 [jquery]: http://jquery.com/  "jQuery"
 [yui]: http://yuilibrary.com/  "YUI"
@@ -361,3 +381,4 @@ web/built/acmedemo/css/index.css
 [bower]: https://github.com/bower/bower  "Bower"
 [npm]: https://npmjs.org/  "NPM"
 [gruntfile_github]: https://github.com/wozbe/wozbe.com/blob/master/Gruntfile.js  "Gruntfile Github"
+[grunt_cli]: https://github.com/gruntjs/grunt-cli  "Grunt CLI"
