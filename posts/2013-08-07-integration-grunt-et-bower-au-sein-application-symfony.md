@@ -2,6 +2,8 @@
 
 ## Définition des outils
 
+> Test
+
 ### Grunt
 
 Développé en Javascript et executé par NodeJS, **[Grunt][grunt]** est utilisé par un large spectre de développeur, et présente de réels atouts par rapport à **Assetic**.  
