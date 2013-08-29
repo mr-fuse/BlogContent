@@ -23,6 +23,8 @@ Nous avons pris l'habitude d'utiliser le couple **Bower et Grunt** pour gérer l
 Etant développeur Symfony,  
 Voici le cas d'usage d'une intégration **Bootstrap, jQuery et FontAwesome** au sein d'une application Symfony2 grâce à Bower & Grunt.
 
+> Certaines parties incluant une structure spécifique peuvent être contestable. Il s'agit d'essais sur nos projets internes afin d'en mesurer l'usage.
+
 ### Structure de fichier
 
 Pour commencer, voyons la structure de vos ressources.  
@@ -58,8 +60,6 @@ La documentation indique que pour surcharger les templates d'un bundle nous devo
 A ce titre, nous pensons qu'il faut utiliser le répertoire **app/Resources/public** pour gérer les fichiers publics de l'application.
 
 Une de nos tâches Grunt consistera à mettre dans le répertoire **web/bundles/app/** le contenu de **app/Resources/public**, ainsi nous traitons les ressources de l'application comme nous le faisons avec un bundle.
-
-> Cette structure est contestable sur le fond. Il s'agit d'un essai sur nos projets afin d'en mesurer l'usage.
 
 ### Ce que l'on attends
 Nous avons décrit la structure des fichiers sources. Sur l'utilisation des bundles il n'y a rien de different par rapport à vos habitudes. On change par contre la manière de procéder pour les données communes à votre application.
