@@ -46,7 +46,7 @@ app/Resources/public/less
 ~~~~~
 
 #### Les bundles
-Il est fort probable que la structure de vos bundles corresponde à la structure **recommandée par Symfony2**. Ainsi vous utilisez le répertoire **src/Acme/DemoBundle/Resources/public/** pour mettre tous les fichiers qui devront être disponible pour vos clients.
+Il est fort probable que la structure de vos bundles corresponde à la structure **recommandée par Symfony2**. Ainsi vous utilisez le répertoire **src/Acme/DemoBundle/Resources/public/** pour mettre tous les fichiers qui devront être disponibles pour vos clients.
 
 De ce fait, vous utilisez la commande *app/console assets:install* pour déployer ces fichiers dans le répertoire **web/**.  
 Ce déploiement peut-être réalisé par une copie de fichier ou par la mise en place de lien symbolique avec l'option **--symlink**.
