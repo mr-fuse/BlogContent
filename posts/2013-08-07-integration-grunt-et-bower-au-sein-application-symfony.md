@@ -246,7 +246,6 @@ Grâce au fichier **package.json**, nous allons définir les dépendances NodeJS
     "grunt-contrib-less": "~0.6.1",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-watch": "~0.4.4",
-    "grunt-contrib-copy": "~0.4.1",
     "grunt-symlink": "~0.4.0",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-uglify": "~0.2.2"
@@ -263,7 +262,6 @@ La configuration de **Gruntfile.js** sera ici simplifiée pour les besoins de l'
 # Gruntfile.js
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-symlink');
-  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -275,8 +273,8 @@ module.exports = function(grunt) {
   var filesLess = {};
 
   // Gestion des fichiers LESS
-  // Les sources des fichiers LESS sont situées : bundles/[bundle]/less/
-  // La destination souhaitées des fichiers compilés CSS : built/[bundle]/css/
+  // Les sources des fichiers LESS sont situées : web/bundles/[bundle]/less/
+  // La destination souhaitées des fichiers compilés CSS : web/built/[bundle]/css/ et web/built/app/css/
   var mappingFileLess = grunt.file.expandMapping(
     ['*/less/*.less', '*/less/*/*.less'], 
     'web/built/', {
