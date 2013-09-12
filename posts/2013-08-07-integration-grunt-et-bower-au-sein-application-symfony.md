@@ -185,9 +185,9 @@ Comme nous l'avons vu au début de l'article, Bower est un gestionnaire de dépe
 npm -g install bower
 ~~~~~
 
-La configuration de Bower passe par un fichier caché **.bower**. Vous pourrez configurer le répertoire de destination des librairies, ainsi que le fichier contenant la liste de vos dépendances.
+La configuration de Bower passe par un fichier caché **.bowerrc**. Vous pourrez configurer le répertoire de destination des librairies, ainsi que le fichier contenant la liste de vos dépendances.
 ~~~~~
-# .bower
+# .bowerrc
 {
   "directory": "web/vendor",
   "json": "bower.json"
